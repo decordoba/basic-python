@@ -37,6 +37,18 @@ def isFloat(string)
 
 def calculateFactors(n)
 
+def getTime()
+
+def transformCurvesToPlot(y_pts, x_pts)
+
+def plotLine(y_pts, x_pts=None, y_label=None, x_label=None, title=None, axis=None, style="-"
+
+def plotLine1D(y_pts, y_label=None, x_label=None, title=None)
+
+def plotLine2D(y_pts, x_pts, y_label=None, x_label=None, title=None)
+
+def plotCloud2D(y_pts, x_pts, y_label=None, x_label=None, title=None, style='x')
+
 def getMaxIndex(myList)
 
 def getMinIndex(myList)
@@ -63,9 +75,9 @@ def removeExtraSpaces(string)
 
 def printSeparator(character="-", length=64)
 
-def printLikeTableRowLeft(widthCol, *columns)
+def returnTableRowLeft(widthCol, *columns)
 
-def printLikeTableRowRight(widthCol, *columns)
+def returnTableRowRight(widthCol, *columns)
 
 def printNice(myList)
 
@@ -77,7 +89,12 @@ def convertListToFloat(myList)
 
 def parseString(input, type=None)
 
+def readFile(filename, default="", print_input=False)
+
+def writeFile(filename, content, print_input=False, append=False)
+
 def readFileArgument(input="", print_input=False)
 
 def readInputArguments(input="", print_input=False)
+
 ```
