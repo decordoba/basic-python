@@ -3,6 +3,8 @@
 import re
 import sys
 import random
+import time
+import matplotlib.pyplot as plt
 
 """
 @author: Daniel de Cordoba Gil
@@ -75,6 +77,93 @@ def calculateFactors(n):
             result |= {i, div}
     return result
 
+# Get current time. Not intended to know the current time, just to measure elapsed time
+def getTime():
+    # Check timeit to measure performance multiple times
+    # e.g. timeit.timeit('[v for v in range(10000)]', number=10000)
+    if sys.platform == 'win32':
+        # On Windows, the best timer is time.clock
+        return time.clock()
+    # On most other platforms the best timer is time.time
+    return time.time()
+
+# pyplot can print more than one curve at the same time, but it doesn't do it in an intuitive way.
+# transformCurvesToPlot gets a list of  curves y_pts = [[curveA_y], [curveB_y], [curveC_y]] and
+# x_pts = [[curveA_x], [curveB_x], [curveC_x]] and returns a tuple like:
+# ([[curveA_y0, curveB_y0, curveC_y0], [curveA_y1, curveB_y1, curveC_y1]...]],
+# [curveA_x0, curveB_x0, curveC_x0], [curveA_x1, curveB_x1, curveC_x1]...])
+# It accepts curves of different lengths too. The new y_pts and x_pts will plot all curves ok.
+#@use transformCurvesToPlot([[-2,2],[-2,-1,0,1,2],[0,0]], [[0,0],[-2,-1,0,1,2],[-2,2]])
+def transformCurvesToPlot(y_pts, x_pts):
+    new_y_pts = []
+    new_x_pts = []
+    last_row = max([len(row) for row in y_pts])
+    for i, row in enumerate(y_pts):
+        for j, y in enumerate(row):
+            try:
+                new_y_pts[j].append(y)
+                new_x_pts[j].append(x_pts[i][j])
+            except IndexError:
+                new_y_pts.append([y])
+                new_x_pts.append([x_pts[i][j]])
+        x = x_pts[i][j]
+        while j < last_row:
+            j += 1
+            try:
+                new_y_pts[j].append(y)
+                new_x_pts[j].append(x)
+            except IndexError:
+                new_y_pts.append([y])
+                new_x_pts.append([x])
+    return (new_y_pts, new_x_pts)
+
+
+# Plot a line or point cloud. Also accepts several lines at the same time, if you set y_pts and
+# x_pts as lists of lists.
+#@use transformCurvesToPlot([[-2,2],[-2,-1,0,1,2],[0,0]], [[0,0],[-2,-1,0,1,2],[-2,2]])
+def plotLine(y_pts, x_pts=None, y_label=None, x_label=None, title=None, axis=None, style="-",
+             color="", show=True):
+    """
+    :param y_pts: y coordinates. A list of list can represent several lines
+    :param x_pts: x coordinates. A list of list can represent several lines
+    :param y_label: label for y axis
+    :param x_label: label for x axis
+    :param axis: len4 list [xmin, xmax, ymin, ymax] to pick range we will see
+    :param style: ('-': line), ('x': cross), ('o': circle), ('s': squre), ('--': dotted line)...
+    :param color: 'r','g','b','c','m','y','k'... If left blank, every curve will take a new color
+    :param show: whether to show result or not
+    :return:
+    """
+    if x_pts is None:
+        plt.plot(y_pts, color + style)
+    else:
+        if isinstance(y_pts, list) and isinstance(y_pts[0], list):
+            (y_pts, x_pts) = transformCurvesToPlot(y_pts, x_pts)
+        plt.plot(x_pts, y_pts, color + style)
+    if y_label is not None:
+        plt.ylabel(y_label)
+    if x_label is not None:
+        plt.xlabel(x_label)
+    if title is not None:
+        plt.title(title)
+    if axis is not None:
+        plt.axis(axis)
+    if show:
+        plt.show()
+
+# Print line between points in a list. Every point will be separated a constant space in the
+# x coordinates, and the y coordinate of every point will be the values in the list
+def plotLine1D(y_pts, y_label=None, x_label=None, title=None):
+    plotLine(y_pts, y_label=y_label, x_label=x_label, title=title)
+
+# Print line between points in a list. Every point is caracterized by and x and y coordinate
+def plotLine2D(y_pts, x_pts, y_label=None, x_label=None, title=None):
+    plotLine(y_pts, x_pts=x_pts, y_label=y_label, x_label=x_label, title=title)
+
+# Print point cloud of coordinates (x_pts, y_pts)
+def plotCloud2D(y_pts, x_pts, y_label=None, x_label=None, title=None, style='x'):
+    plotLine(y_pts, x_pts=x_pts, y_label=y_label, x_label=x_label, title=title, style=style)
+
 # Get index of max value in a list
 def getMaxIndex(myList):
     # For a faster implementation in big lists, try return numpy.argmax(myList)
@@ -139,11 +228,11 @@ def removeExtraSpaces(string):
 def printSeparator(character="-", length=64):
     print character*length
 
-# Prints array in columns, aligned to the left
-# @use printLikeTableRowLeft(8, "Hello", "World", ["I", "am", "Daniel"])
-def printLikeTableRowLeft(widthCol, *columns):
+# Returns array in columns, aligned to the left. Ready to be printed
+# @use returnTableRowLeft(8, "Hello", "World", ["I", "am", "Daniel"])
+def returnTableRowLeft(widthCol, *columns):
     if not isinstance(widthCol, int):
-        print "ERROR: printLikeTableRowLeft(widthCol, *columns)"
+        print "ERROR: returnTableRowLeft(widthCol, *columns)"
     else:
         cell = "{:<" + str(widthCol) + "}"
         buff = ""
@@ -153,13 +242,14 @@ def printLikeTableRowLeft(widthCol, *columns):
                     buff += cell.format(ccol)
             else:
                 buff += cell.format(col)
-        print buff
+        return buff
+    return ""
 
-# Prints array in columns, aligned to the right
-# @use printLikeTableRowRight(8, "Hello", "World", ["I", "am", "Daniel"])
-def printLikeTableRowRight(widthCol, *columns):
+# Return array in columns, aligned to the right. Ready to be printed
+# @use returnTableRowRight(8, "Hello", "World", ["I", "am", "Daniel"])
+def returnTableRowRight(widthCol, *columns):
     if not isinstance(widthCol, int):
-        print "ERROR: printLikeTableRowRight(widthCol, *columns)"
+        print "ERROR: returnTableRowRight(widthCol, *columns)"
     else:
         cell = "{:>" + str(widthCol) + "}"
         buff = ""
@@ -169,7 +259,8 @@ def printLikeTableRowRight(widthCol, *columns):
                     buff += cell.format(ccol)
             else:
                 buff += cell.format(col)
-        print buff
+        return buff
+    return ""
 
 # Prints every element of an iterator in a different line, and subelements separated by spaces
 # @use printNice(("number", 1, "array", [1,2,3,4,5]))
@@ -201,9 +292,9 @@ def printNicer(myList, widthCol=None, side="left"):
     buff = ""
     for el in myList:
         if side == "left":
-            printLikeTableRowLeft(widthCol, el)
+            print returnTableRowLeft(widthCol, el)
         else:
-            printLikeTableRowRight(widthCol, el)
+            print returnTableRowRight(widthCol, el)
 
 # Converts a list or a list of lists to integers. Attention, the original list will be overwritten
 # @use convertListToInt([["0", "1"], ["2"], "3"])
@@ -242,23 +333,51 @@ def parseString(input, type=None):
             convertListToFloat(array)
     return array
 
+# Returns the file in filename as a string. If there is any problem, returns default
+# @use readFile("my_file.txt", "Error while reading the file")
+def readFile(filename, default="", print_input=False):
+    try:
+        with open(filename, 'r') as f:
+            default = f.read()
+        if print_input:
+            print "File [{}] loaded:".format(filename)
+    except IOError:
+        if print_input:
+            print "Error in filename, using default input:"
+    if print_input:
+        print default
+    return default
+
+# Writes the string content in the file filename and returns True. If there is any problem,
+# returns False. If append is set to True, in case the file exists it will append the content
+# instead of overwriting it.
+# @use writeFile("my_file.txt", "Hello World", append=True)
+def writeFile(filename, content, print_input=False, append=False):
+    try:
+        op = "w+"
+        if append: op = "a+"
+        with open(filename, op) as f:
+            f.write(content)
+        if print_input:
+            if append:
+                print "File [{}] appended".format(filename)
+            else:
+                print "File [{}] saved".format(filename)
+    except IOError:
+        if print_input:
+            print "Error while creating / opening file [{}]".format(filename)
+        return False
+    return True
+
 # Tries to return the content of a filename passed as an argument. If it fails, it returns input
 # @use readFileArgument("Error while reading the file")
 def readFileArgument(input="", print_input=False):
     if len(sys.argv) > 1:
-        try:
-            with open(sys.argv[1], 'r') as f:
-                input = f.read()
-            if print_input:
-                print "Input file loaded:"
-        except IOError:
-            if print_input:
-                print "Error in input file name, using default input:"
+        readFile(sys.argv[1], input, print_input)
     else:
         if print_input:
             print "No input file name argument, using default input:"
-    if print_input:
-        print input
+            print input
     return input
 
 # Returns the arguments passed separated with spaces. If no arguments are passed, it returns input
@@ -276,6 +395,19 @@ def readInputArguments(input="", print_input=False):
     if print_input:
         print input
     return input
+
+"""
+TIPS:
+
+Profiling:
+import cProfile
+cProfile.run('mySlowFunction("test_value")')
+
+Line Profiling: pip install line_profiler
+Decorate the functions you want to profile with @profile (in line before def add @profile).
+Run: kernprof -l script_to_profile.py
+Run: python -m line_profiler script_to_profile.py.lprof
+"""
 
 """
 if __name__ == "__main__":
