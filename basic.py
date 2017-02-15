@@ -122,7 +122,7 @@ def transformCurvesToPlot(y_pts, x_pts):
 # x_pts as lists of lists.
 #@use transformCurvesToPlot([[-2,2],[-2,-1,0,1,2],[0,0]], [[0,0],[-2,-1,0,1,2],[-2,2]])
 def plotLine(y_pts, x_pts=None, y_label=None, x_label=None, title=None, axis=None, style="-",
-             color="", show=True):
+             color="", y_scale="linear", x_scale="linear", show=True):
     """
     :param y_pts: y coordinates. A list of list can represent several lines
     :param x_pts: x coordinates. A list of list can represent several lines
@@ -131,7 +131,8 @@ def plotLine(y_pts, x_pts=None, y_label=None, x_label=None, title=None, axis=Non
     :param axis: len4 list [xmin, xmax, ymin, ymax] to pick range we will see
     :param style: ('-': line), ('x': cross), ('o': circle), ('s': squre), ('--': dotted line)...
     :param color: 'r','g','b','c','m','y','k'... If left blank, every curve will take a new color
-    :param show: whether to show result or not
+    :param show: whether to show result or not. Show is blocking (pauses the execution) until the
+                 plot window is closed
     :return:
     """
     if x_pts is None:
@@ -148,21 +149,28 @@ def plotLine(y_pts, x_pts=None, y_label=None, x_label=None, title=None, axis=Non
         plt.title(title)
     if axis is not None:
         plt.axis(axis)
+    plt.yscale(y_scale)
+    plt.xscale(x_scale)
+    plt.draw()
     if show:
         plt.show()
 
 # Print line between points in a list. Every point will be separated a constant space in the
 # x coordinates, and the y coordinate of every point will be the values in the list
-def plotLine1D(y_pts, y_label=None, x_label=None, title=None):
-    plotLine(y_pts, y_label=y_label, x_label=x_label, title=title)
+def plotLine1D(y_pts, y_label=None, x_label=None, title=None, y_scale="linear", show=True):
+    plotLine(y_pts, y_label=y_label, x_label=x_label, title=title, y_scale=y_scale, show=show)
 
 # Print line between points in a list. Every point is caracterized by and x and y coordinate
-def plotLine2D(y_pts, x_pts, y_label=None, x_label=None, title=None):
-    plotLine(y_pts, x_pts=x_pts, y_label=y_label, x_label=x_label, title=title)
+def plotLine2D(y_pts, x_pts, y_label=None, x_label=None, title=None, y_scale="linear",
+               x_scale="linear", show=True):
+    plotLine(y_pts, x_pts=x_pts, y_label=y_label, x_label=x_label, title=title, y_scale=y_scale,
+             x_scale=x_scale, show=show)
 
 # Print point cloud of coordinates (x_pts, y_pts)
-def plotCloud2D(y_pts, x_pts, y_label=None, x_label=None, title=None, style='x'):
-    plotLine(y_pts, x_pts=x_pts, y_label=y_label, x_label=x_label, title=title, style=style)
+def plotCloud2D(y_pts, x_pts, y_label=None, x_label=None, title=None, style='x', y_scale="linear",
+                x_scale="linear", show=True):
+    plotLine(y_pts, x_pts=x_pts, y_label=y_label, x_label=x_label, title=title, style=style,
+             y_scale=y_scale, x_scale=x_scale, show=show)
 
 # Get index of max value in a list
 def getMaxIndex(myList):
@@ -302,9 +310,11 @@ def convertListToInt(myList):
     for i, el in enumerate(myList):
         if isinstance(el, list):
             for j, subel in enumerate(el):
-                myList[i][j] = int(myList[i][j])
+                # We do this double cast to avoid errors and accept numbers like 1.55e8
+                myList[i][j] = int(float(myList[i][j]))
         else:
-            myList[i] = int(myList[i])
+            # We do this double cast to avoid errors and accept numbers like 1.55e8
+            myList[i] = int(float(myList[i]))
     return myList
 
 # Converts a list or a list of lists to floats. Attention, the original list will be overwritten
