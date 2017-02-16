@@ -37,6 +37,10 @@ def isFloat(string)
 
 def calculateFactors(n)
 
+def greatestCommonDivisor(a, b)
+
+def isPowerOf2(n)
+
 def getTime()
 
 def transformCurvesToPlot(y_pts, x_pts)
