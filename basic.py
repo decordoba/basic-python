@@ -77,6 +77,22 @@ def calculateFactors(n):
             result |= {i, div}
     return result
 
+# Calculate the greatest common divisor of a and b
+def greatestCommonDivisor(a, b):
+    # You should probably use from fractions import gcd instead of this function, but
+    # here you can appreciate the beauty of the Euclidean algorithm
+    # Unless b==0, the result will have the same sign as b (so that when
+    # b is divided by it, the result comes out positive).
+    while b:
+        (a, b) = b, a % b
+    return a
+
+# Returns True if n is a power of 2 (like 2,4,8,16,32,64...1024) and False otherwise
+def isPowerOf2(n):
+    # Pretty cool, huh? I don't think I will use it often, but it has been coming up a lot
+    # lately so I thought I would include it. Warning, unknown behavior for negative numbers
+    return ((n & (n - 1)) == 0) and n != 0
+
 # Get current time. Not intended to know the current time, just to measure elapsed time
 def getTime():
     # Check timeit to measure performance multiple times
