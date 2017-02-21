@@ -45,13 +45,13 @@ def getTime()
 
 def transformCurvesToPlot(y_pts, x_pts)
 
-def plotLine(y_pts, x_pts=None, y_label=None, x_label=None, title=None, axis=None, style="-"
+def plotLine(y_pts, x_pts=None, y_label=None, x_label=None, title=None, axis=None, style="-", color="", y_scale="linear", x_scale="linear", show=True)
 
 def plotLine1D(y_pts, y_label=None, x_label=None, title=None, y_scale="linear", show=True)
 
-def plotLine2D(y_pts, x_pts, y_label=None, x_label=None, title=None, y_scale="linear"
+def plotLine2D(y_pts, x_pts, y_label=None, x_label=None, title=None, y_scale="linear", x_scale="linear", show=True)
 
-def plotCloud2D(y_pts, x_pts, y_label=None, x_label=None, title=None, style='x', y_scale="linear"
+def plotCloud2D(y_pts, x_pts, y_label=None, x_label=None, title=None, style='x', y_scale="linear", x_scale="linear", show=True)
 
 def getMaxIndex(myList)
 
