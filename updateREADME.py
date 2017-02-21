@@ -1,4 +1,4 @@
-#!/usr/bin/env
+#!/usr/bin/env python2
 
 from basic import *
 
@@ -19,9 +19,17 @@ if __name__ == "__main__":
 
     # From basic.py copy all the function definitions
     f = open("basic.py", "r")
+    saveLine = False
     for line in f:
-        if line.startswith("def "):
-            README += removeExtraSpaces(line)[:line.rfind(":")] + "\n\n"
+        if saveLine or line.startswith("def "):
+            saveLine = True
+            sep = line.rfind("):")
+            if sep < 0:
+                README += removeExtraSpaces(line) + " "
+                continue
+            README += removeExtraSpaces(line[:sep]) + ")"
+            README += "\n\n"
+            saveLine = False
     f.close()
 
     # Add this at the end of the file
