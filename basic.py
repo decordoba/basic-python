@@ -87,6 +87,16 @@ def greatestCommonDivisor(a, b):
         (a, b) = b, a % b
     return a
 
+# Returns True if n is palindrome, False otherwise
+def isPalindrome(n):
+    return n == n[::-1]
+
+# Returns True if n is palindrome, False otherwise. Should be faster in the worst case, as it
+# checks only half the string. Empirically, the time taken is similar or worse
+def isPalindromeFalf(n):
+    l = len(n) // 2
+    return n[:l] == n[-l:][::-1]
+
 # Returns True if n is a power of 2 (like 2,4,8,16,32,64...1024) and False otherwise
 def isPowerOf2(n):
     # Pretty cool, huh? I don't think I will use it often, but it has been coming up a lot
