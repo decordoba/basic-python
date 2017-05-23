@@ -39,6 +39,10 @@ def calculateFactors(n)
 
 def greatestCommonDivisor(a, b)
 
+def isPalindrome(n)
+
+def isPalindromeFalf(n)
+
 def isPowerOf2(n)
 
 def getTime()
@@ -67,7 +71,7 @@ def removeDuplicates(seq)
 
 def removeDuplicatesWithOrder(seq)
 
-def getRandomInt(minInt, maxInt)
+def getRandomInt(minInt, maxInt=None)
 
 def getRandomFloat(minFloat, maxFloat)
 
@@ -100,5 +104,9 @@ def writeFile(filename, content, print_input=False, append=False)
 def readFileArgument(input="", print_input=False)
 
 def readInputArguments(input="", print_input=False)
+
+def callProcess(process, cwd=None)
+
+def askYNQuestion(question)
 
 ```
