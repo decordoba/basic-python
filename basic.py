@@ -236,7 +236,10 @@ def removeDuplicatesWithOrder(seq):
     return [x for x in seq if not (x in seen or seen_add(x))]
 
 # Return the next random floating point number (int) in the range [0.0, 1.0)
-def getRandomInt(minInt, maxInt):
+def getRandomInt(minInt, maxInt=None):
+    if maxInt is None:
+        maxInt = minInt
+        minInt = 0
     return random.randint(minInt, maxInt)
 
 # Return a random floating point number N such that a<=N<=b for a<=b and b<=N<=a for b<a
@@ -431,6 +434,20 @@ def readInputArguments(input="", print_input=False):
     if print_input:
         print input
     return input
+
+# Call process, as if we were calling it from cmd. Use cwd to specify current working dir.
+# @use callProcess("ls -l -A", "my_relative_or_absolute_path")
+def callProcess(process, cwd=None):
+    cmd = process.split()
+    p = subprocess.Popen(cmd, cwd=cwd)
+    p.wait()
+
+# Ask question and repeat it until the user responds yes or no
+def askYNQuestion(question):
+    answer = ""
+    while answer not in {"yes", "no", "y", "n"}:
+        answer = raw_input(question).lower()
+    return answer[0] == "y"
 
 """
 TIPS:
