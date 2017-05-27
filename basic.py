@@ -148,25 +148,26 @@ def transformCurvesToPlot(y_pts, x_pts):
 # x_pts as lists of lists.
 #@use transformCurvesToPlot([[-2,2],[-2,-1,0,1,2],[0,0]], [[0,0],[-2,-1,0,1,2],[-2,2]])
 def plotLine(y_pts, x_pts=None, y_label=None, x_label=None, title=None, axis=None, style="-",
-             color="", y_scale="linear", x_scale="linear", show=True):
+             color="", y_scale="linear", x_scale="linear", label=None, show=True):
     """
     :param y_pts: y coordinates. A list of list can represent several lines
     :param x_pts: x coordinates. A list of list can represent several lines
     :param y_label: label for y axis
     :param x_label: label for x axis
+    :param title: the title of the figure
     :param axis: len4 list [xmin, xmax, ymin, ymax] to pick range we will see
     :param style: ('-': line), ('x': cross), ('o': circle), ('s': squre), ('--': dotted line)...
     :param color: 'r','g','b','c','m','y','k'... If left blank, every curve will take a new color
+    :param label: text that will be displayed if we show a legend
     :param show: whether to show result or not. Show is blocking (pauses the execution) until the
                  plot window is closed
-    :return:
     """
     if x_pts is None:
-        plt.plot(y_pts, color + style)
+        plt.plot(y_pts, color + style, label=label)
     else:
         if isinstance(y_pts, list) and isinstance(y_pts[0], list):
             (y_pts, x_pts) = transformCurvesToPlot(y_pts, x_pts)
-        plt.plot(x_pts, y_pts, color + style)
+        plt.plot(x_pts, y_pts, color + style, label=label)
     if y_label is not None:
         plt.ylabel(y_label)
     if x_label is not None:
@@ -183,20 +184,22 @@ def plotLine(y_pts, x_pts=None, y_label=None, x_label=None, title=None, axis=Non
 
 # Print line between points in a list. Every point will be separated a constant space in the
 # x coordinates, and the y coordinate of every point will be the values in the list
-def plotLine1D(y_pts, y_label=None, x_label=None, title=None, y_scale="linear", show=True):
-    plotLine(y_pts, y_label=y_label, x_label=x_label, title=title, y_scale=y_scale, show=show)
+def plotLine1D(y_pts, y_label=None, x_label=None, title=None, y_scale="linear", label=None,
+               show=True):
+    plotLine(y_pts, y_label=y_label, x_label=x_label, title=title, y_scale=y_scale, label=label,
+             show=show)
 
 # Print line between points in a list. Every point is caracterized by and x and y coordinate
 def plotLine2D(y_pts, x_pts, y_label=None, x_label=None, title=None, y_scale="linear",
-               x_scale="linear", show=True):
+               x_scale="linear", label=None, show=True):
     plotLine(y_pts, x_pts=x_pts, y_label=y_label, x_label=x_label, title=title, y_scale=y_scale,
-             x_scale=x_scale, show=show)
+             x_scale=x_scale, label=label, show=show)
 
 # Print point cloud of coordinates (x_pts, y_pts)
 def plotCloud2D(y_pts, x_pts, y_label=None, x_label=None, title=None, style='x', y_scale="linear",
-                x_scale="linear", show=True):
+                x_scale="linear", label=None, show=True):
     plotLine(y_pts, x_pts=x_pts, y_label=y_label, x_label=x_label, title=title, style=style,
-             y_scale=y_scale, x_scale=x_scale, show=show)
+             y_scale=y_scale, x_scale=x_scale, label=label, show=show)
 
 # Print text in the plot
 def plotText(y, x, text, style="normal", color="k", fontsize=None, fontweight=None,
