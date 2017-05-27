@@ -201,6 +201,25 @@ def plotCloud2D(y_pts, x_pts, y_label=None, x_label=None, title=None, style='x',
     plotLine(y_pts, x_pts=x_pts, y_label=y_label, x_label=x_label, title=title, style=style,
              y_scale=y_scale, x_scale=x_scale, label=label, show=show)
 
+# Display legend (labels can be set beforehand using other functions like plotLine) in location
+def plotLegend(labels=None, location="best", boxed=None):
+    """
+    :param labels: labels shown. If None, all labels introduced in other functions will be displayed
+    :param location: 'best', 'upper right', 'upper left', 'lower left', 'lower right', 'right',
+                     'center left', 'center right', 'lower center', 'upper center', 'center' (numbers 0 to 10)
+    :param boxed: whether to show a semi-transparent box around the legend or not. None means default
+    Find more (accurate location...) here: https://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.legend
+    """
+    if labels is None:
+        plt.legend(loc=location, frameon=boxed)
+    else:
+        if isinstance(labels, int):
+            plt.legend(loc=labels, frameon=boxed)
+        elif isinstance(labels, str):
+            plt.legend([labels], loc=location, frameon=boxed)
+        else:
+            plt.legend(labels, loc=location, frameon=boxed)
+
 # Print text in the plot
 def plotText(y, x, text, style="normal", color="k", fontsize=None, fontweight=None,
              verticalalignment="center", horizontalalignment="center", show=True):
