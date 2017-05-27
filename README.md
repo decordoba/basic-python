@@ -47,6 +47,8 @@ def isPowerOf2(n)
 
 def getTime()
 
+def timeFunction(fn, *args)
+
 def transformCurvesToPlot(y_pts, x_pts)
 
 def plotLine(y_pts, x_pts=None, y_label=None, x_label=None, title=None, axis=None, style="-", color="", y_scale="linear", x_scale="linear", label=None, show=True)
@@ -56,6 +58,8 @@ def plotLine1D(y_pts, y_label=None, x_label=None, title=None, y_scale="linear", 
 def plotLine2D(y_pts, x_pts, y_label=None, x_label=None, title=None, y_scale="linear", x_scale="linear", label=None, show=True)
 
 def plotCloud2D(y_pts, x_pts, y_label=None, x_label=None, title=None, style='x', y_scale="linear", x_scale="linear", label=None, show=True)
+
+def plotLegend(labels=None, location="best", boxed=None)
 
 def plotText(y, x, text, style="normal", color="k", fontsize=None, fontweight=None, verticalalignment="center", horizontalalignment="center", show=True)
 
