@@ -198,6 +198,29 @@ def plotCloud2D(y_pts, x_pts, y_label=None, x_label=None, title=None, style='x',
     plotLine(y_pts, x_pts=x_pts, y_label=y_label, x_label=x_label, title=title, style=style,
              y_scale=y_scale, x_scale=x_scale, show=show)
 
+# Print text in the plot
+def plotText(y, x, text, style="normal", color="k", fontsize=None, fontweight=None,
+             verticalalignment="center", horizontalalignment="center", show=True):
+    """
+    :param y: y coordinate for text (one int/float).
+    :param x: x coordinates for text (one int/float).
+    :param style: 'normal', 'italic' or 'oblique'
+    :param color: 'r','g','b','c','m','y','k'...
+    :param fontsize: number of pixels or 'large', 'medium', 'smaller', 'small', 'x-large',
+                     'xx-small', 'larger', 'x-small', 'xx-large'
+    :param fontweight: 'normal', 'bold', 'heavy', 'light', 'ultrabold', 'ultralight'
+    :param verticalalignment: 'center', 'top', 'bottom', 'baseline'
+    :param horizontalalignment: 'center', 'right', 'left'
+    :param show: whether to show result or not. Show is blocking (pauses the execution) until the
+                 plot window is closed
+    Find more (rotaion, alpha, fontname, box...) here: https://matplotlib.org/users/text_props.html
+    """
+    plt.text(x, y, text, style=style, color=color, fontsize=fontsize, fontweight=fontweight,
+             verticalalignment=verticalalignment, horizontalalignment=horizontalalignment)
+    plt.draw()
+    if show:
+        plt.show()
+
 # Get index of max value in a list
 def getMaxIndex(myList):
     # For a faster implementation in big lists, try return numpy.argmax(myList)
