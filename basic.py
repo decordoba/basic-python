@@ -216,7 +216,7 @@ def plotText(y, x, text, style="normal", color="k", fontsize=None, fontweight=No
     :param horizontalalignment: 'center', 'right', 'left'
     :param show: whether to show result or not. Show is blocking (pauses the execution) until the
                  plot window is closed
-    Find more (rotaion, alpha, fontname, box...) here: https://matplotlib.org/users/text_props.html
+    Find more (rotation, alpha, fontname, box...) here: https://matplotlib.org/users/text_props.html
     """
     plt.text(x, y, text, style=style, color=color, fontsize=fontsize, fontweight=fontweight,
              verticalalignment=verticalalignment, horizontalalignment=horizontalalignment)

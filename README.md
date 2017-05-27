@@ -49,13 +49,15 @@ def getTime()
 
 def transformCurvesToPlot(y_pts, x_pts)
 
-def plotLine(y_pts, x_pts=None, y_label=None, x_label=None, title=None, axis=None, style="-", color="", y_scale="linear", x_scale="linear", show=True)
+def plotLine(y_pts, x_pts=None, y_label=None, x_label=None, title=None, axis=None, style="-", color="", y_scale="linear", x_scale="linear", label=None, show=True)
 
-def plotLine1D(y_pts, y_label=None, x_label=None, title=None, y_scale="linear", show=True)
+def plotLine1D(y_pts, y_label=None, x_label=None, title=None, y_scale="linear", label=None, show=True)
 
-def plotLine2D(y_pts, x_pts, y_label=None, x_label=None, title=None, y_scale="linear", x_scale="linear", show=True)
+def plotLine2D(y_pts, x_pts, y_label=None, x_label=None, title=None, y_scale="linear", x_scale="linear", label=None, show=True)
 
-def plotCloud2D(y_pts, x_pts, y_label=None, x_label=None, title=None, style='x', y_scale="linear", x_scale="linear", show=True)
+def plotCloud2D(y_pts, x_pts, y_label=None, x_label=None, title=None, style='x', y_scale="linear", x_scale="linear", label=None, show=True)
+
+def plotText(y, x, text, style="normal", color="k", fontsize=None, fontweight=None, verticalalignment="center", horizontalalignment="center", show=True)
 
 def getMaxIndex(myList)
 
