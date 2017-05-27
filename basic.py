@@ -113,6 +113,12 @@ def getTime():
     # On most other platforms the best timer is time.time
     return time.time()
 
+# Measure time that a function fn takes to execute and return
+def timeFunction(fn, *args):
+    t = getTime()
+    ret = fn(*args)
+    return (getTime() - t, ret)
+
 # pyplot can print more than one curve at the same time, but it doesn't do it in an intuitive way.
 # transformCurvesToPlot gets a list of  curves y_pts = [[curveA_y], [curveB_y], [curveC_y]] and
 # x_pts = [[curveA_x], [curveB_x], [curveC_x]] and returns a tuple like:
