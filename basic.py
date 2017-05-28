@@ -149,7 +149,6 @@ def transformCurvesToPlot(y_pts, x_pts):
                 new_x_pts.append([x])
     return (new_y_pts, new_x_pts)
 
-
 # Plot a line or point cloud. Also accepts several lines at the same time, if you set y_pts and
 # x_pts as lists of lists.
 #@use transformCurvesToPlot([[-2,2],[-2,-1,0,1,2],[0,0]], [[0,0],[-2,-1,0,1,2],[-2,2]])
@@ -285,6 +284,10 @@ def removeDuplicatesWithOrder(seq):
     seen = set()
     seen_add = seen.add
     return [x for x in seq if not (x in seen or seen_add(x))]
+
+# Duplicate all elements of an array a number of times ([1, 2] becomes [1, 1, 2, 2])
+def duplicateAllElementsList(seq, num_reps=2):
+    return [val for val in seq for _ in range(num_reps)]
 
 # Return the next random floating point number (int) in the range [0.0, 1.0)
 def getRandomInt(minInt, maxInt=None):
