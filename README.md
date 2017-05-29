@@ -77,11 +77,15 @@ def removeDuplicates(seq)
 
 def removeDuplicatesWithOrder(seq)
 
+def duplicateAllElementsList(seq, num_reps=2)
+
 def getRandomInt(minInt, maxInt=None)
 
 def getRandomFloat(minFloat, maxFloat)
 
 def getRandom()
+
+def getRandomElementInList(seq)
 
 def mean(myList)
 
