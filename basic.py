@@ -1,4 +1,4 @@
-#!/usr/bin/env
+#!/usr/bin/env python2
 
 import re
 import sys
@@ -303,6 +303,10 @@ def getRandomFloat(minFloat, maxFloat):
 # Return the next random floating point number in the range [0.0, 1.0)
 def getRandom():
     return random.random()
+
+# Return random element from seq, which can be a string, list or tuple
+def getRandomElementInList(seq):
+    return random.choice(seq)
 
 # Calculate the average / mean value in a list of ints or floats
 def mean(myList):
