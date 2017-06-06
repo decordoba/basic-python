@@ -87,6 +87,8 @@ def getRandom()
 
 def getRandomElementInList(seq)
 
+def getRandomChar(char_set="lowercase")
+
 def mean(myList)
 
 def removeExtraSpaces(string)
