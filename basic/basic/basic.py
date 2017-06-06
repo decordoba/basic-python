@@ -3,6 +3,7 @@
 import re
 import sys
 import random
+import string
 import time
 import matplotlib.pyplot as plt
 
@@ -307,6 +308,24 @@ def getRandom():
 # Return random element from seq, which can be a string, list or tuple
 def getRandomElementInList(seq):
     return random.choice(seq)
+
+# Return a random character. char_set can be used to select the character domain
+def getRandomChar(char_set="lowercase"):
+    if char_set == "letters":
+        str = string.ascii_letters
+    elif char_set == "lowercase":
+        str = string.ascii_lowercase
+    elif char_set == "uppercase":
+        str = string.ascii_uppercase
+    elif char_set == "digits":
+        str = string.digits
+    elif char_set == "letters_digits":
+        str = string.ascii_letters + string.digits
+    elif char_set == "all":
+        str = string.ascii_letters + string.digits + string.punctuation
+    else:
+        str = string.ascii_lowercase
+    return random.choice(str)
 
 # Calculate the average / mean value in a list of ints or floats
 def mean(myList):
