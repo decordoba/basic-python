@@ -18,7 +18,7 @@ if __name__ == "__main__":
     f.close()
 
     # From basic.py copy all the function definitions
-    f = open("basic.py", "r")
+    f = open("basic/basic/basic.py", "r")
     saveLine = False
     for line in f:
         if saveLine or line.startswith("def "):
