@@ -6,6 +6,7 @@ import random
 import string
 import time
 import matplotlib.pyplot as plt
+from datetime import timedelta, datetime
 
 """
 @author: Daniel de Cordoba Gil
@@ -119,6 +120,22 @@ def timeFunction(fn, *args):
     t = getTime()
     ret = fn(*args)
     return (getTime() - t, ret)
+
+# Get time (and date) in a human-readable format (yyyy-mm-dd hh:mm:ss)
+def getCurrentTime(time=True, date=False):
+    now = datetime.now()
+    s = ""
+    if date:
+        s += "{} ".format(now.date())
+    if time:
+        s += "{:02d}:{:02d}:{:02d}".format(now.hour, now.minute, now.second)
+    return s.strip()
+
+# Get elapsed time between t0 and t1 in format hh:mm:ss:msmsms
+def getFormatedElapsedTime(t0, t1=None):
+    if t1 is None:
+        t1 = time.clock()
+    return "{}".format(timedelta(seconds=t1-t0))
 
 # pyplot can print more than one curve at the same time, but it doesn't do it in an intuitive way.
 # transformCurvesToPlot gets a list of  curves y_pts = [[curveA_y], [curveB_y], [curveC_y]] and
