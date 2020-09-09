@@ -2,7 +2,7 @@ from setuptools import setup
 
 
 setup(name='basic',
-      version='0.2',
+      version='1.0',
       description='Package with basic utilities for dummies',
       url='http://github.com/decordoba/basic-python',
       author='Daniel de Cordoba Gil',

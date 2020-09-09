@@ -6,7 +6,6 @@ import sys
 import random
 import string
 import time
-import matplotlib.pyplot as plt
 from datetime import timedelta, datetime
 
 
@@ -167,161 +166,6 @@ def getFormatedElapsedTime(t0, t1=None):
     if t1 is None:
         t1 = getTime()  # time.clock() or time.time()
     return "{}".format(timedelta(seconds=t1-t0))
-
-
-def transformCurvesToPlot(y_pts, x_pts):
-    """Get a list of curves y_pts and x_pts and return a tuple formatted for pyplot.
-    
-    pyplot can print more than one curve at the same time, but it doesn't do it in an intuitive way.
-    This method gets a list of curves y_pts
-        [[curveA_y], [curveB_y], [curveC_y]]
-    and x_pts
-        [[curveA_x], [curveB_x], [curveC_x]]
-    and returns a tuple
-        ([[curveA_y0, curveB_y0, curveC_y0], [curveA_y1, curveB_y1, curveC_y1]...],
-         [[curveA_x0, curveB_x0, curveC_x0], [curveA_x1, curveB_x1, curveC_x1]...])
-    
-    It accepts curves of different lengths too. The returned y_pts and x_pts will plot all curves fine.
-    
-    @use transformCurvesToPlot([[-2,2],[-2,-1,0,1,2],[0,0]], [[0,0],[-2,-1,0,1,2],[-2,2]])
-    @ret ([[-2, -2, 0], [2, -1, 0], [2, 0, 0], [2, 1, 0], [2, 2, 0], [2, 2, 0]],
-          [[0, -2, -2], [0, -1, 2], [0, 0, 2], [0, 1, 2], [0, 2, 2], [0, 2, 2]])
-    """
-    new_y_pts = []
-    new_x_pts = []
-    last_row = max([len(row) for row in y_pts])
-    for i, row in enumerate(y_pts):
-        for j, y in enumerate(row):
-            try:
-                new_y_pts[j].append(y)
-                new_x_pts[j].append(x_pts[i][j])
-            except IndexError:
-                new_y_pts.append([y])
-                new_x_pts.append([x_pts[i][j]])
-        x = x_pts[i][j]
-        while j < last_row:
-            j += 1
-            try:
-                new_y_pts[j].append(y)
-                new_x_pts[j].append(x)
-            except IndexError:
-                new_y_pts.append([y])
-                new_x_pts.append([x])
-    return new_y_pts, new_x_pts
-
-
-def plotLine(y_pts, x_pts=None, y_label=None, x_label=None, title=None, axis=None, style="-",
-             color="", y_scale="linear", x_scale="linear", label=None, show=True):
-    """Plot a line or point cloud.
-    
-    It accepts several lines at the same time, if you set y_pts and x_pts as lists of lists.
-
-    @use plotLine([1,2,3,2,1], [0,1,2,3,4])
-
-    :param y_pts: y coordinates. A list of list can represent several lines
-    :param x_pts: x coordinates. A list of list can represent several lines
-    :param y_label: label for y axis
-    :param x_label: label for x axis
-    :param title: the title of the figure
-    :param axis: len4 list [xmin, xmax, ymin, ymax] to pick range we will see
-    :param style: ('-': line), ('x': cross), ('o': circle), ('s': squre), ('--': dotted line)...
-    :param color: 'r','g','b','c','m','y','k'... If left blank, every curve will take a new color
-    :param label: text that will be displayed if we show a legend
-    :param show: whether to show result or not. Show is blocking (pauses the execution) until the
-                 plot window is closed
-    """
-    if x_pts is None:
-        plt.plot(y_pts, color + style, label=label)
-    else:
-        if isinstance(y_pts, list) and isinstance(y_pts[0], list):
-            (y_pts, x_pts) = transformCurvesToPlot(y_pts, x_pts)
-        plt.plot(x_pts, y_pts, color + style, label=label)
-    if y_label is not None:
-        plt.ylabel(y_label)
-    if x_label is not None:
-        plt.xlabel(x_label)
-    if title is not None:
-        plt.title(title)
-    if axis is not None:
-        plt.axis(axis)
-    plt.yscale(y_scale)
-    plt.xscale(x_scale)
-    plt.draw()
-    if show:
-        plt.show()
-
-
-def plotLine1D(y_pts, y_label=None, x_label=None, title=None, y_scale="linear", label=None,
-               show=True):
-    """Print line between points in a list.
-    
-    Every point will be separated a constant space in the x coordinates,
-    and the y coordinate of every point will be the values in the list.
-    """
-    plotLine(y_pts, y_label=y_label, x_label=x_label, title=title, y_scale=y_scale, label=label,
-             show=show)
-
-
-def plotLine2D(y_pts, x_pts, y_label=None, x_label=None, title=None, y_scale="linear",
-               x_scale="linear", label=None, show=True):
-    """Print line between points in a list. Every point is caracterized by an x and y coordinate."""
-    plotLine(y_pts, x_pts=x_pts, y_label=y_label, x_label=x_label, title=title, y_scale=y_scale,
-             x_scale=x_scale, label=label, show=show)
-
-
-def plotCloud2D(y_pts, x_pts, y_label=None, x_label=None, title=None, style="x", y_scale="linear",
-                x_scale="linear", label=None, show=True):
-    """Print point cloud of coordinates (x_pts, y_pts)."""
-    plotLine(y_pts, x_pts=x_pts, y_label=y_label, x_label=x_label, title=title, style=style,
-             y_scale=y_scale, x_scale=x_scale, label=label, show=show)
-
-
-def plotLegend(labels=None, location="best", boxed=None):
-    """Display legend (labels can be set beforehand using other functions like plotLine) in location.
-
-    :param labels: labels shown. If None, all labels introduced in other functions will be displayed
-    :param location: "best", "upper right", "upper left", "lower left", "lower right", "right",
-                     "center left", "center right", "lower center", "upper center", "center" (numbers 0 to 10)
-    :param boxed: whether to show a semi-transparent box around the legend or not. None means default
-    Find more (accurate location...) here: https://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.legend
-    """
-    if labels is None:
-        plt.legend(loc=location, frameon=boxed)
-    else:
-        if isinstance(labels, int):
-            plt.legend(loc=labels, frameon=boxed)
-        elif isinstance(labels, str):
-            plt.legend([labels], loc=location, frameon=boxed)
-        else:
-            plt.legend(labels, loc=location, frameon=boxed)
-
-
-def plotText(y, x, text, style="normal", color="k", fontsize=None, fontweight=None,
-             verticalalignment="center", horizontalalignment="center", show=True):
-    """Print text in the plot.
-
-    @use plotText(0.5, 0.5, "Middle") --> print text in the middle of screen
-    @use plotText(0.0, 0.0, "Bottom-Left") --> print text in the bottom left of screen
-    @use plotText(1.0, 1.0, "Top-Right") --> print text in the top right of screen
-
-    :param y: y coordinate for text (one int/float).
-    :param x: x coordinates for text (one int/float).
-    :param style: "normal", "italic" or "oblique"
-    :param color: 'r','g','b','c','m','y','k'...
-    :param fontsize: number of pixels or 'large', 'medium', 'smaller', 'small', 'x-large',
-                     "xx-small", "larger", "x-small", "xx-large"
-    :param fontweight: "normal", "bold", "heavy", "light", "ultrabold", "ultralight"
-    :param verticalalignment: "center", "top", "bottom", "baseline"
-    :param horizontalalignment: "center", "right", "left"
-    :param show: whether to show result or not. Show is blocking (pauses the execution) until the
-                 plot window is closed
-    Find more (rotation, alpha, fontname, box...) here: https://matplotlib.org/users/text_props.html
-    """
-    plt.text(x, y, text, style=style, color=color, fontsize=fontsize, fontweight=fontweight,
-             verticalalignment=verticalalignment, horizontalalignment=horizontalalignment)
-    plt.draw()
-    if show:
-        plt.show()
 
 
 def getMaxIndex(myList):
@@ -503,7 +347,7 @@ def returnTableRowRight(widthCol, *columns):
     return returnTableRow(widthCol, *columns, align="right")
 
 
-def printNice(myList):
+def printNice(myList, print_result=True):
     """Print every element of an iterator in a different line, and subelements separated by spaces.
 
     @use printNice(("number", 1, "array", [1, 2, 3, 4, 5]))
@@ -519,7 +363,9 @@ def printNice(myList):
         else:
             buff += str(el)
         buff += "\n"
-    print(buff)
+    if print_result:
+        print(buff)
+    return buff
 
 
 def printNicer(myList, widthCol=None, side="left"):
@@ -539,9 +385,20 @@ def printNicer(myList, widthCol=None, side="left"):
     buff = ""
     for el in myList:
         if side == "left":
-            print(returnTableRowLeft(widthCol, el))
+            buff += returnTableRowLeft(widthCol, el)
         else:
-            print(returnTableRowRight(widthCol, el))
+            buff += returnTableRowRight(widthCol, el)
+    if print_result:
+        print(buff)
+    return buff
+
+
+def indentString(s, indent="  "):
+    """Add indent to the left of every line in a string.
+
+    @use indentString("Hello\nDarkness\nMy\nOld\nFriend", indent="    ")
+    """
+    return indent + str(s).replace("\n", "\n" + indent)
 
 
 def convertListToInt(myList):
