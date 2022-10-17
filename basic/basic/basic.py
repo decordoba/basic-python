@@ -57,6 +57,11 @@ def isAlphaLower(string):
     return string.islower() and string.isalpha()
 
 
+def isDigit(string):
+    """Return True if string only contains digits."""
+    return string.isdigit()
+
+
 def charToASCII(character):
     """Return ASCII number of character."""
     return ord(character)
@@ -83,6 +88,18 @@ def isFloat(string):
         return True
     except ValueError:
         return False
+
+
+def intToBinary(n, padding=None):
+    """Return number as binary. Variable padding adds 0s to the left of the number."""
+    if padding is None:
+        return "{:b}".format(n)
+    return ("{:0" + str(padding) + "b}").format(n)
+
+
+def binaryToInt(n):
+    """Return binary string as int"""
+    return int(n, 2)
 
 
 def calculateFactors(n):
